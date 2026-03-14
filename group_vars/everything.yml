@@ -1,0 +1,30 @@
+---
+# System Audit Data
+app_name: "Inventory-Service"
+required_disk_gb: 10
+admin_user: "enwer"
+test_environment: "Development"
+max_timeout_seconds: 30
+allowed_ports:
+  - 80
+  - 443
+  - 22
+required_files:
+  - "/etc/hosts"
+  - ".vault_pass"
+log_path: "/tmp/audit.log"
+check_cpu_usage: true
+backup_retention_days: 7
+required_service: "ssh"
+forbidden_file: "/tmp/this_is_a_ghost_file.txt"
+min_memory_mb: 100
+
+
+services_to_check:
+  - { name: 'ssh', required: true }
+  - { name: 'httpd', required: false }
+  - { name: 'postgres', required: false }
+
+
+test_url: "https://www.google.com"
+expected_status: 200

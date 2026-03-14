@@ -1,0 +1,26 @@
+---
+- name: Professional System Audit Suite
+  hosts: everything
+  vars_files:
+    - ../Secrets/secret_vars.yml
+    - ../group_vars/everything.yml
+  tasks:
+    - name: 1. Identify Application
+      ansible.builtin.debug:
+        msg: "Auditing {{ app_name }} application. in the {{ test_environment }} environment."
+
+    - name: 2. Validate user permissions
+      ansible.builtin.assert:
+          that:
+            - ansible_facts['user_id'] == admin_user
+          fail_msg: "Audit failed: You must be logged in as {{ admin_user }}."
+          success_msg: "User validation passed."
+
+      
+    - name: 3. Check Required Files
+      ansible.builtin.stat:
+         path: "{{ item if item.startswith('/') else playbook_dir + '/../' + item }}"
+      register: file_check
+      loop: "{{ required_files }}"
+      failed_when: not file_check.stat.exists
+
