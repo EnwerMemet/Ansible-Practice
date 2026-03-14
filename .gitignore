@@ -1,0 +1,21 @@
+# --- Python & Environment ---
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# --- Ansible ---
+*.retry
+*.log
+# If you use Ansible Vault later, you might want to ignore secret files
+*.secret
+.vault_pass
+
+# --- macOS System Files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- VS Code ---
+.vscode/

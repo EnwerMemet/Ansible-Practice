@@ -1,0 +1,14 @@
+---
+- name: Test Playbook with Vault
+  hosts: everything
+  vars_files:
+    - ../Secrets/secret_vars.yml
+
+  tasks:
+    - name: Use the secret password
+      debug:
+        msg: "The secret database password is: {{ db_password }}"
+
+    - name: Use the secret API key
+      debug:
+        msg: "The API Key is: {{ api_key }}"

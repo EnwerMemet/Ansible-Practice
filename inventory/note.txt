@@ -1,0 +1,49 @@
+Resource: https://devdocs.io/ansible/getting_started/get_started_inventory#get-started-inventory
+
+# Group name
+[my_laptop]
+localhost ansible_connection=local
+
+# The Metagroup (Children of 'everything')
+[everything:children]
+my_laptop - group name, 
+#localhost is the universal name for "The machine I am currently sitting at."
+# ansible_connection=local: This is a Variable. tells Ansible to talk to your own computer without using the internet/SSH.
+
+
+Even if you do not define any groups in your inventory, Ansible creates two default groups: all and ungrouped. 
+
+Tips for building inventories
+Ensure that group names are meaningful and unique. Group names are also case sensitive.
+Avoid spaces, hyphens, and preceding numbers (use floor_19, not 19th_floor) in group names.
+Group hosts in your inventory logically according to their What, Where, and When.
+
+What
+Group hosts according to the topology, for example: db, web, leaf, spine.
+
+Where
+Group hosts by geographic location, for example: datacenter, region, floor, building.
+
+When
+Group hosts by stage, for example: development, test, staging, production.
+
+example:
+
+[webservers]
+foo.example.com
+bar.example.com
+
+[dbservers]
+one.example.com
+two.example.com
+three.example.com
+
+
+Use metagroups
+Create a metagroup that organizes multiple groups in your inventory with the following syntax:
+
+metagroupname:
+  children:
+
+
+You can create your inventory file, The most common formats are INI and YAML because Ansible includes built-in support for them. 
