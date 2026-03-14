@@ -1,0 +1,36 @@
+---
+- name: Deployment Gatekeeper Suite
+  hosts: everything
+  vars_files:
+    - ../Secrets/secret_vars.yml
+    - ../group_vars/everything.yml
+
+  tasks:
+    - name: 1. Check if service is running
+      ansible.builtin.command: "pgrep {{ required_service }}"
+      ignore_errors: true
+
+    - name: 2. Check for forbidden file
+      ansible.builtin.stat:
+        path: "{{ forbidden_file }}"
+      register: forbidden_file_check
+      failed_when: forbidden_file_check.stat.exists
+
+    - name: 3. Verify System Memory
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['memtotal_mb'] > min_memory_mb
+        fail_msg: "Audit failed: System memory is below {{ min_memory_mb }} MB."
+        success_msg: "Audit passed! System memory is greather than {{ min_memory_mb }} MB."
+
+    - name: 4. Website Health Check
+      ansible.builtin.uri:
+        url: "{{ test_url }}"
+        status_code: "{{ expected_status }}"
+        # This tells Ansible to skip the SSL handshake check
+        validate_certs: false
+      register: web_result
+
+    - name: 5. Display Response Info
+      ansible.builtin.debug:
+        msg: "The site {{ test_url }} returned status {{ web_result.status }}"
