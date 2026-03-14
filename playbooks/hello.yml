@@ -3,6 +3,7 @@
   hosts: everything
   vars_files:
     - ../Secrets/secret_vars.yml
+    - ../group_vars/everything.yml
 
   tasks:
     - name: Use the secret password
@@ -12,3 +13,14 @@
     - name: Use the secret API key
       debug:
         msg: "The API Key is: {{ api_key }}"
+
+    - name: Greet the user
+      debug:
+        msg: "Hello {{ user_greeting }}! You are running in the {{ env_type }} environment."
+      when: env_type == "Development"
+
+    - name: Production Only Task
+      debug:
+        msg: "Connecting to Secure {{ env_type }} Server..."
+      when: env_type == "Production"
+
