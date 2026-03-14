@@ -7,20 +7,19 @@
 
   tasks:
     - name: Use the secret password
-      debug:
+      ansible.builtin.debug:
         msg: "The secret database password is: {{ db_password }}"
 
     - name: Use the secret API key
-      debug:
+      ansible.builtin.debug:
         msg: "The API Key is: {{ api_key }}"
 
     - name: Greet the user
-      debug:
+      ansible.builtin.debug:
         msg: "Hello {{ user_greeting }}! You are running in the {{ env_type }} environment."
       when: env_type == "Development"
 
     - name: Production Only Task
-      debug:
+      ansible.builtin.debug:
         msg: "Connecting to Secure {{ env_type }} Server..."
       when: env_type == "Production"
-
